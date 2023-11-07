@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.2.1/redux.js"
+        integrity="sha512-Olr8rkMYuxq3KpAPjYA/mAVYe7EIEP4RkhoAvD/qOrlauzE4CTvpQSg/cRX0/5Qreret4aobD0vg1xtjBqR7VA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+
+<body>
+    <div>
+
+        <h1 id="counter"></h1>
+        <button onclick="increase()">Increase</button>
+        <button onclick="decrease()">Decrease</button>
+    </div>
+    <hr>
+    <div>
+        <label for="">Value</label>
+        <input type="text" id="data">
+        <button onclick="increaseByValue()">Increase by value</button>
+    </div>
+</body>
+<script>
+
+    //state global state i ifade etmektedir. action ise reducerın kapısını çalan arkadaş
+    function counterReducer(state, action) {
+
+        if (typeof state == "undefined") {
+            return 0
+        }
+        if (action.type == "INCREASE") {
+            return state + 1
+        }
+        else if (action.type == "DECREASE") {
+            return state - 1
+        }
+        else if (action.type == "EMPTY") {
+            return 0
+        }
+        else if (action.type == "INCREASE_BY_VALUE") {
+            return state + action.payload
+        }
+        else {
+            return state
+        }
+    }
+
+
+
+    var store = Redux.createStore(counterReducer)
+
+
+    function render() {
+        document.getElementById('counter').innerText = store.getState()
+    }
+
+    function render2() {
+        console.log('RENDER!!!');
+    }
+
+    store.subscribe(render)
+    store.subscribe(render2)
+
+
+    function increase() {
+
+        store.dispatch({
+            type: "INCREASE"
+        })
+
+    }
+
+
+    function decrease() {
+        store.dispatch({
+            type: "DECREASE"
+        })
+    }
+
+
+
+    function increaseByValue() {
+        var data = document.getElementById("data").value
+
+        store.dispatch({
+            type: "INCREASE_BY_VALUE",
+            payload: Number(data)
+        })
+    }
+
+
+</script>
+
+</html>
